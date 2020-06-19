@@ -7,9 +7,9 @@ from pprint import pprint
 import requests
 from dotenv import load_dotenv
 
-from app import APP_ENV
+from app import APP_ENV #looking into the app directory's init file to help us import some functionality from one file to another, facilitating imports
 
-load_dotenv()
+load_dotenv() #loading contents of .env file into environment so os module can read it
 
 OPEN_WEATHER_API_KEY = os.getenv("OPEN_WEATHER_API_KEY")
 MY_ZIP = os.getenv("MY_ZIP", default="20057")
@@ -22,14 +22,14 @@ def human_friendly_temp(my_temperature_f):
 
 def get_hourly_forecasts(zip_code=MY_ZIP, country_code=COUNTRY_CODE):
     # see: https://openweathermap.org/current
-    request_url = f"https://api.openweathermap.org/data/2.5/forecast?zip={zip_code},{country_code}&units=imperial&appid={OPEN_WEATHER_API_KEY}"
+    request_url = f"https://api.openweathermap.org/data/2.5/forecast?zip={zip_code},{country_code}&units=imperial&appid={OPEN_WEATHER_API_KEY}" #typical api url pull in
     response = requests.get(request_url)
     parsed_response = json.loads(response.text)
     #print(parsed_response.keys()) #> dict_keys(['cod', 'message', 'cnt', 'list', 'city'])
     result = {
         "city_name": parsed_response["city"]["name"],
         "hourly_forecasts": []
-    }
+    } #dictionary with city name and hourly forecast data
     for forecast in parsed_response["list"][0:9]:
         #print(forecast.keys()) #> dict_keys(['dt', 'main', 'weather', 'clouds', 'wind', 'sys', 'dt_txt'])
         result["hourly_forecasts"].append({
@@ -39,7 +39,7 @@ def get_hourly_forecasts(zip_code=MY_ZIP, country_code=COUNTRY_CODE):
         })
     return result
 
-if __name__ == "__main__":
+if __name__ == "__main__": #only run the code below if this script has been run from the command line, not when we're importing functions from this script into another script
 
     if APP_ENV == "development":
         zip_code = input("PLEASE INPUT A ZIP CODE (e.g. 06510): ")
