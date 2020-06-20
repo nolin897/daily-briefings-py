@@ -22,7 +22,7 @@ def register():
     # return "Sign Up for our Product! (TODO)" # we'll make an HTML template for this later!
     return render_template("new_user_form.html")
 
-@home_routes.route("/users/create", methods=["POST"])
+@home_routes.route("/users/create", methods=["POST"]) #use web form to post request and then we handle that request
 def create_user():
     print("FORM DATA:", dict(request.form))
     # FYI: we are able to access the form data via the "request" object we import from flask
